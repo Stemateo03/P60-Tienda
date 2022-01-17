@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>457</height>
+    <height>552</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,6 +17,18 @@
    <layout class="QHBoxLayout" name="horizontalLayout_3">
     <item>
      <widget class="QWidget" name="widget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>350</width>
+        <height>16777215</height>
+       </size>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QGroupBox" name="groupBox">
@@ -32,7 +44,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="lineEdit"/>
+           <widget class="QLineEdit" name="inCedula"/>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_2">
@@ -42,7 +54,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="lineEdit_2"/>
+           <widget class="QLineEdit" name="inNombre"/>
           </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_3">
@@ -52,7 +64,7 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QLineEdit" name="lineEdit_3"/>
+           <widget class="QLineEdit" name="inTelefono"/>
           </item>
           <item row="6" column="0">
            <widget class="QLabel" name="label_4">
@@ -62,7 +74,7 @@
            </widget>
           </item>
           <item row="6" column="1">
-           <widget class="QLineEdit" name="lineEdit_4"/>
+           <widget class="QLineEdit" name="inEmail"/>
           </item>
           <item row="8" column="0">
            <widget class="QLabel" name="label_5">
@@ -72,7 +84,11 @@
            </widget>
           </item>
           <item row="8" column="1">
-           <widget class="QPlainTextEdit" name="plainTextEdit"/>
+           <widget class="QPlainTextEdit" name="inDireccion">
+            <property name="lineWidth">
+             <number>3</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -91,7 +107,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QComboBox" name="comboBox"/>
+           <widget class="QComboBox" name="inProducto"/>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_7">
@@ -101,7 +117,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QSpinBox" name="spinBox"/>
+           <widget class="QSpinBox" name="inCantidad"/>
           </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_8">
@@ -111,14 +127,23 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QLabel" name="label_9">
+           <widget class="QLabel" name="outPrecio">
             <property name="text">
              <string>0.00</string>
             </property>
            </widget>
           </item>
           <item row="7" column="1">
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="btnAgregar">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(143, 240, 164);</string>
+            </property>
             <property name="text">
              <string>Agregar</string>
             </property>
@@ -140,7 +165,7 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="QTableWidget" name="tableWidget"/>
+           <widget class="QTableWidget" name="outDetalle"/>
           </item>
          </layout>
         </widget>
@@ -155,7 +180,7 @@
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>228</width>
+              <width>187</width>
               <height>20</height>
              </size>
             </property>
@@ -172,9 +197,18 @@
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QLabel" name="label_13">
+              <widget class="QLabel" name="outSubtotal">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="text">
                 <string>0.0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
               </widget>
              </item>
@@ -186,23 +220,59 @@
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QLabel" name="label_14">
+              <widget class="QLabel" name="outIva">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="text">
                 <string>0.0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
               </widget>
              </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_12">
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
                <property name="text">
                 <string>TOTAL:</string>
                </property>
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QLabel" name="label_15">
+              <widget class="QLabel" name="outTotal">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(249, 240, 107);
+color: rgb(224, 27, 36);</string>
+               </property>
                <property name="text">
                 <string>0.0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
               </widget>
              </item>
