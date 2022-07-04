@@ -40,3 +40,4 @@ Producto::Producto(int codigo, const QString &nombre, float precio, QObject *par
     m_nombre(nombre),
     m_precio(precio)
 {}
+

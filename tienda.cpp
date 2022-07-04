@@ -1,8 +1,6 @@
 #include "tienda.h"
 #include "ui_tienda.h"
 
-#include <QDebug>
-
 Tienda::Tienda(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Tienda)
@@ -20,6 +18,9 @@ Tienda::Tienda(QWidget *parent)
     ui->outDetalle->setHorizontalHeaderLabels(cabecera);
     // Establecer el subtotal a 0
     m_subtotal = 0;
+
+
+
 }
 
 Tienda::~Tienda()
@@ -31,11 +32,35 @@ Tienda::~Tienda()
  */
 void Tienda::cargarProductos()
 {
-    // Crear productos "quemados" en el código
-    m_productos.append(new Producto(1, "Leche", 0.80));
-    m_productos.append(new Producto(2, "Pan", 0.15));
-    m_productos.append(new Producto(3, "Queso", 2.50));
-    // Podría leerse de una base de datos, de un archivo o incluso de Internet
+
+    QDir actual = QDir::current(); //directorio actual
+    // El path al archivo CSV
+    QString archivoProductos = actual.absolutePath() + "/productos.csv";
+    QFile archivo(archivoProductos);
+    //qDebug() << archivo.fileName();
+
+    if (archivo.open(QIODevice::ReadOnly | QIODevice::Text)){
+
+        bool primera = true;
+        QTextStream in(&archivo);
+        while (!in.atEnd()) {
+            QString linea = in.readLine();
+            if (primera){
+                primera = false;
+                continue;
+            }
+            QStringList datos = linea.split(";");
+            QString precio = datos.at(2);
+            float p = precio.toFloat();
+            int id = datos.at(0).toInt();
+            m_productos.append(new Producto(id, datos.at(1), p));
+        }
+
+        archivo.close();
+    }else{
+        QMessageBox::critical(this,"Error","La lista de productos no se pudo cargar");
+    }
+
 }
 
 void Tienda::calcular(float stProducto)
@@ -49,6 +74,7 @@ void Tienda::calcular(float stProducto)
     ui->outIva->setText("$ " + QString::number(iva, 'f', 2));
     ui->outTotal->setText("$ " + QString::number(total, 'f', 2));
 }
+
 
 
 void Tienda::on_inProducto_currentIndexChanged(int index)
@@ -93,8 +119,73 @@ void Tienda::on_btnAgregar_released()
 
 }
 
+void Tienda::on_actionGuadar_triggered()
+{
+    // Abrir un cuadro de dialogo para seleccionar el path y archivo a guardadr
+    QTextStream io;
+    QString nombreArchivo = QFileDialog::getSaveFileName(this,"Guardar factura",QDir::current().absolutePath() + "/productos.csv","Archivos de calculo (*.csv)");
+    QFile archivo;
+    archivo.setFileName(nombreArchivo);
+    archivo.open(QFile::WriteOnly | QFile::Truncate);
+    if(!archivo.isOpen()){
+        QMessageBox::critical(this,"Aviso","No se pudo abrir el archivo");
+        return;
+    }
+    io.setDevice(&archivo);
+    int fila = ui->outDetalle->rowCount();
+    int columna = ui->outDetalle->columnCount();
+    QString celda;
+    for(int i=0; i<fila; i++){
+        for(int j=0; j<columna; j++){
+            if(j != (columna-1)){
+                celda = ui->outDetalle->item(i,j)->text()+";";
+            }else{
+                celda = ui->outDetalle->item(i,j)->text();
+            }
+
+            io << celda;
+        }
+
+        io << "\n";
+    }
+
+    QMessageBox::information(this,"Aviso","Archivo guardado");
+    archivo.flush();
+    archivo.close();
+}
 
 
 
 
+void Tienda::on_actionNuevo_triggered()
+{
+
+    while(ui->outDetalle->rowCount() > 0){
+        ui->outDetalle->removeRow(0);
+    }
+    ui->statusbar->showMessage("Nueva hoja de calculos",3000);
+
+}
+
+void Tienda::on_actionAcerca_de_triggered()
+{
+    acerca *dialog = new acerca(this);
+
+    dialog->setVersion(VERSION);
+
+    dialog->exec();
+}
+
+
+void Tienda::on_btnFacturar_clicked()
+{
+    if(ui->inCedula->displayText().isEmpty() || ui->inEmail->displayText().isEmpty() ||ui->inNombre->displayText().isEmpty()){
+        QMessageBox::warning(this, "Advertencia", "Algunos campos estan vacias");
+        return;
+    }else{
+        Factura *dialog = new Factura(this);
+        dialog->setTienda(TIENDA);
+        dialog->exec();
+    }
+}
 
